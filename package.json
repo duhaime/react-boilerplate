@@ -1,5 +1,6 @@
 {
-  "name": "learn-react",
+  "name": "react-boilerplate",
+  "repository": "https://github.com/duhaime/react-boilerplate",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
