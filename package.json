@@ -1,0 +1,23 @@
+{
+  "name": "learn-react",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify -v -d -t [ reactify --es6 ] main.js -o compiled.js",
+    "build": "NODE_ENV=production browserify -t [ reactify --es6 ] main.js | uglifyjs > compiled.js",
+    "start": "python -m SimpleHTTPServer 7050"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
+  }
+}
