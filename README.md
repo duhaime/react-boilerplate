@@ -4,6 +4,7 @@ To get started, just run:
 
 ```
 npm i
+npm run build
 npm run start
 ```
 

@@ -48,11 +48,6 @@ var common = {
   module: {
     loaders: [
       {
-        test: /\.css$/,
-        loaders: ['style', 'css'],
-        include: [PATHS.app, PATHS.node_modules]
-      },
-      {
         test: /\.jsx?$/,
         // Leverage caching for better performance
         loaders: ['babel?cacheDirectory'],
@@ -91,6 +86,17 @@ if(TARGET === 'start' || !TARGET) {
       host: process.env.HOST,
       port: process.env.PORT
     },
+
+    module: {
+      loaders: [
+        {
+          test: /\.css$/,
+          loaders: ['style', 'css'],
+          include: [PATHS.app, PATHS.node_modules]
+        }
+      ]
+    },
+
     plugins: [
 
       // Use hot module replacement
@@ -112,14 +118,16 @@ if(TARGET === 'build' || !TARGET) {
     module: {
       loaders: [
         {
-          test: /\.js/,
-          loader: 'babel',
+          test: /\.css/,
+          loader: ExtractTextPlugin.extract(
+            'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss'
+          ),
           include: PATHS.app
         },
         {
-          test: /\.css$/,
-          loaders: ['style', 'css'],
-          include: [PATHS.app, PATHS.node_modules]
+          test: /\.js/,
+          loader: 'babel',
+          include: PATHS.app
         },
         {
           test: /\.(jpg|png)/,

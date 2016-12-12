@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server'
 import { Router, RouterContext, match, browserHistory, createMemoryHistory } from 'react-router'
 import HtmlShell from './components/HtmlShell'
 import Routes from './components/Routes'
+require('./project-styles.css');
 
 /* Client render (optional) */
 if (typeof document !== 'undefined') {
