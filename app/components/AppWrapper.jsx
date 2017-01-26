@@ -1,6 +1,6 @@
-var React       = require('react')
-var Header      = require('./Header')
-var Footer      = require('./Footer')
+var React = require('react')
+var Header = require('./Header')
+var Footer = require('./Footer')
 
 // render application shell
 var AppWrapper = React.createClass({

@@ -1,12 +1,13 @@
 {
-  "name": "react-quickstart",
-  "version": "1.0.0",
+  "name": "react-boilerplate",
+  "version": "0.1.0",
   "description": "React quickstart with models, routing, and dev tools",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "build": "webpack",
+    "compress": "webpack",
     "start": "webpack-dev-server",
     "production": "npm run build && node server.js"
   },

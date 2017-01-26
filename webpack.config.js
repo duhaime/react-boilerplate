@@ -1,13 +1,14 @@
-var path              = require('path');
-var webpack           = require('webpack');
-var merge             = require('webpack-merge');
-var CompressionPlugin = require('compression-webpack-plugin');
+var path = require('path')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var CompressionPlugin = require('compression-webpack-plugin')
 
 var TARGET = process.env.npm_lifecycle_event;
 
 var PATHS = {
   app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build')
+  build: path.join(__dirname, 'build'),
+  node_modules: path.join(__dirname, 'node_modules')
 };
 
 // Specify babel configuration
@@ -16,8 +17,15 @@ process.env.BABEL_ENV = TARGET;
 // Define configuration options common to 
 // development and production environments
 var common = {
+
   entry: {
     app: PATHS.app
+  },
+
+  // Use the history api fallback so React routes
+  // are obeyed
+  devServer: {
+    historyApiFallback: true
   },
 
   // Specify which assets webpack should load
@@ -41,7 +49,7 @@ var common = {
       {
         test: /\.css$/,
         loaders: ['style', 'css'],
-        include: PATHS.app    
+        include: [PATHS.app, PATHS.node_modules]
       },
       {
         test: /\.jsx?$/,
@@ -71,7 +79,7 @@ if(TARGET === 'start' || !TARGET) {
       inline: true,
       progress: true,
 
-      // Display only errors to minimize output
+      // Display only errors amd minimize output:
       stats: 'errors-only',
 
       // When using Vagrant or other VM, set:
@@ -80,7 +88,7 @@ if(TARGET === 'start' || !TARGET) {
       // 0.0.0.0 is available to all network devices
       // unlike default
       host: process.env.HOST,
-      port: process.env.PORT
+      port: process.env.PORT || 8081
     },
     plugins: [
 
@@ -90,8 +98,17 @@ if(TARGET === 'start' || !TARGET) {
   });
 }
 
-// Production configuration
+// Bundled development configuration
 if(TARGET === 'build' || !TARGET) {
+  module.exports = merge(common, {
+    plugins: [
+      new webpack.optimize.OccurrenceOrderPlugin()
+    ]
+  });
+}
+
+// Production configuration
+if(TARGET === 'compress' || !TARGET) {
   module.exports = merge(common, {
     plugins: [
       // Optimize React library for production
@@ -107,7 +124,6 @@ if(TARGET === 'build' || !TARGET) {
       }),
 
       new webpack.optimize.OccurrenceOrderPlugin()
-
     ]
   });
 }

@@ -1,15 +1,15 @@
 // server.js
-var express               = require('express')
-var path                  = require('path')
-var compression           = require('compression')
-var session               = require('express-session')
-var morgan                = require('morgan')
-var cookieParser          = require('cookie-parser')
-var bodyParser            = require('body-parser')
-var methodOverride        = require('method-override')
+var express = require('express')
+var path = require('path')
+var compression = require('compression')
+var session = require('express-session')
+var morgan = require('morgan')
+var cookieParser = require('cookie-parser')
+var bodyParser = require('body-parser')
+var methodOverride = require('method-override')
 
 // configure database
-var mongoose              = require('mongoose')
+var mongoose = require('mongoose')
 
 /***
 *
