@@ -1,7 +1,7 @@
-import {Link} from 'react-router';
-var React = require('react');
-var About = require('./About');
-var Home = require('./Home');
+import {Link} from 'react-router'
+import React from 'react'
+import About from './About'
+import Home from './Home'
 
 export default class Header extends React.Component {
   render() {

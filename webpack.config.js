@@ -1,12 +1,11 @@
 // webpack.config.js
-var StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var webpack = require('webpack');
-var merge = require('webpack-merge');
-var path = require('path');
-var data = require('./data');
-
-var TARGET = process.env.npm_lifecycle_event;
+var StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var webpack = require('webpack')
+var merge = require('webpack-merge')
+var path = require('path')
+var config = require('./config')
+var TARGET = process.env.npm_lifecycle_event
 
 var PATHS = {
   app: path.join(__dirname, 'app'),
@@ -19,7 +18,7 @@ var PATHS = {
 var common = {
 
   entry: {
-    app: PATHS.app + "/Index"
+    app: PATHS.app + '/Index'
   },
 
   // Use the history api fallback so React routes
@@ -119,7 +118,7 @@ if(TARGET === 'build' || !TARGET) {
       loaders: [
         {
           test: /\.css/,
-          loader: ExtractTextPlugin.extract("style-loader", "css-loader"),
+          loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
           include: PATHS.app
         },
         {
@@ -135,8 +134,8 @@ if(TARGET === 'build' || !TARGET) {
       ],
     },
     plugins: [
-      new ExtractTextPlugin("styles.css"),
-      new StaticSiteGeneratorPlugin('main', data.routes, data),
+      new ExtractTextPlugin('styles.css'),
+      new StaticSiteGeneratorPlugin('main', config.routes, config),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify('production')
