@@ -18,9 +18,9 @@ var mongoose = require('mongoose')
 ***/
 
 mongoose.connect('mongodb://localhost/dissertation');
-mongoose.connection.on("error", function(err) {
+mongoose.connection.on('error', function(err) {
   console.log(err);
-});
+})
 
 /***
 *
@@ -35,23 +35,31 @@ var app = express()
 app.use(compression())
 
 // provide a session secret
-app.use(session({ secret: 'hello_cello' }));
+app.use(session({
+  secret: 'hello_cello',
+  name: 'calculemmas',
+  proxy: true,
+  resave: true,
+  saveUninitialized: true
+}))
 
 // serve files from the build directory
 app.use(express.static(path.join(__dirname, 'build')))
 
 // enable the cookie parser
-app.use(cookieParser())
+app.use(cookieParser());
 
 // enable the body parser
-app.use(bodyParser())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(bodyParser.json())
 
 // enable method overrides
-app.use(methodOverride());
+app.use(methodOverride())
 
 // enable logging
 morgan('combined', {
-  skip: function (req, res) { return res.statusCode < 400 }
+  skip: (req, res) => { return res.statusCode < 400 }
 })
 
 /***
