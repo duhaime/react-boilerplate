@@ -1,80 +1,45 @@
-// server.js
 var express = require('express')
 var path = require('path')
-var compression = require('compression')
-var session = require('express-session')
-var morgan = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
-
-// configure database
-var mongoose = require('mongoose')
-
-/***
-*
-* Connect to the Mongoose db
-*
-***/
-
-mongoose.connect('mongodb://localhost/dissertation');
-mongoose.connection.on('error', function(err) {
-  console.log(err);
-})
-
-/***
-*
-* Configure Express production server
-*
-***/
-
-// initialize the server
 var app = express()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 
-// send compressed assets
-app.use(compression())
+var messages = [];
+var lastId = 0;
 
-// provide a session secret
-app.use(session({
-  secret: 'hello_cello',
-  name: 'calculemmas',
-  proxy: true,
-  resave: true,
-  saveUninitialized: true
-}))
+app.use(express.static('build'))
 
-// serve files from the build directory
-app.use(express.static(path.join(__dirname, 'build')))
+io.on('connection', function(socket){
+  console.log(' * user connected');
 
-// enable the cookie parser
-app.use(cookieParser());
+  // Emit messages to connected users
+  socket.emit('messages', messages);
 
-// enable the body parser
-app.use(bodyParser.urlencoded({ extended: true }))
+  socket.on('disconnect', function(){
+    console.log(' * user disconnected');
+  });
 
-app.use(bodyParser.json())
+  // When a message is sent, save it and emit it to users
+  socket.on('message', function (message) {
+    lastId += 1;
+    message.id = lastId;
+    message.time = new Date();
+    if (messages.length > 100) {
+      messages.shift();
+    }
+    messages.push(message);
+    socket.broadcast.emit('message', message);
+  });
+});
 
-// enable method overrides
-app.use(methodOverride())
+var server = http.listen(3000, function(){
+  console.log('Serving on port %s', server.address().port);
+});
 
-// enable logging
-morgan('combined', {
-  skip: (req, res) => { return res.statusCode < 400 }
-})
-
-/***
-*
-* View Routes
-*
-***/
-
-// send requests to index.html so browserHistory in React Router works
-app.get('*', function (req, res) {
+app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
+});
 
-// ask server to listen on desired port
-var PORT = process.env.PORT || 7000
-app.listen(PORT, function() {
-  console.log('Production Express server running at localhost:' + PORT)
-})
+app.get('*', function(req, res){
+  res.redirect('/');
+});
