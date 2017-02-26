@@ -1,11 +1,11 @@
-var path = require('path')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var CompressionPlugin = require('compression-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const CompressionPlugin = require('compression-webpack-plugin')
 
-var TARGET = process.env.npm_lifecycle_event;
+const TARGET = process.env.npm_lifecycle_event;
 
-var PATHS = {
+const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
   node_modules: path.join(__dirname, 'node_modules')
@@ -16,7 +16,7 @@ process.env.BABEL_ENV = TARGET;
 
 // Define configuration options common to 
 // development and production environments
-var common = {
+const common = {
 
   entry: {
     app: PATHS.app
@@ -95,7 +95,7 @@ if(TARGET === 'start' || !TARGET) {
       // Use hot module replacement
       new webpack.HotModuleReplacementPlugin()
     ]
-  });
+  })
 }
 
 // Bundled development configuration
@@ -104,7 +104,7 @@ if(TARGET === 'build' || !TARGET) {
     plugins: [
       new webpack.optimize.OccurrenceOrderPlugin()
     ]
-  });
+  })
 }
 
 // Production configuration
@@ -125,5 +125,5 @@ if(TARGET === 'compress' || !TARGET) {
 
       new webpack.optimize.OccurrenceOrderPlugin()
     ]
-  });
+  })
 }

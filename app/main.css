@@ -1,10 +1,32 @@
 body, html {
-  margin: 0;
-  padding: 0;
   height: 100%;
   width: 100%;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: Open Sans;
+}
+
+@font-face {
+  font-family: 'voynich';
+  src: url('/assets/fonts/voynich-1.23-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/***
+* Containers
+***/
+
+#app {
+  height: 100%;
+}
+
+.app-container {
+  height: 100%;
 }
