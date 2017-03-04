@@ -87,6 +87,21 @@ app.get('/api/records', (req, res) => {
 
 /***
 *
+* New records
+*
+***/
+
+app.post('/api/records/new', (req, res) => {
+  record = new models.record(req.body);
+
+  record.save((err, data) => {
+    if (err) return res.status(500).send({cause: err})
+    return res.status(200).send(data)
+  })
+})
+
+/***
+*
 * View routes
 *
 ***/
