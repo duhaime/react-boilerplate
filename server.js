@@ -20,8 +20,8 @@ var models = require('./app/models/models')
 *
 ***/
 
-mongoose.connect('mongodb://localhost/voynich')
-mongoose.connection.on('error', function(err) {
+mongoose.connect('mongodb://localhost/' + config.db)
+mongoose.connection.on('error', (err) => {
   console.log(err)
 })
 
@@ -40,7 +40,7 @@ app.use(compression())
 // provide a session secret
 app.use(session({
   secret: 'hello_cello',
-  name: 'voynich',
+  name: '',
   proxy: true,
   resave: true,
   saveUninitialized: true
@@ -92,12 +92,12 @@ app.get('/api/pages', (req, res) => {
 ***/
 
 // send requests to index.html so browserHistory in React Router works
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 // ask server to listen on desired port
 const PORT = process.env.PORT || 8080
-app.listen(PORT, function() {
+app.listen(PORT, () => {
   console.log('Production Express server running at localhost:' + PORT)
 })

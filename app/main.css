@@ -12,13 +12,6 @@ body {
   font-family: Open Sans;
 }
 
-@font-face {
-  font-family: 'voynich';
-  src: url('/assets/fonts/voynich-1.23-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 /***
 * Containers
 ***/

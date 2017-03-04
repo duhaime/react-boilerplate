@@ -7,7 +7,7 @@ config.api = {
   prefix: 'api'
 }
 
-config.db = 'voynich'
-config.brand = 'NoQIicW NieneI'
+config.db = 'boilerplate'
+config.brand = 'boilerplate'
 
 module.exports = config
