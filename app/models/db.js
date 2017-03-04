@@ -1,7 +1,7 @@
 var db = {}
 
-db.page = {
-  page: String,
+db.record = {
+  name: String,
   text: String
 }
 

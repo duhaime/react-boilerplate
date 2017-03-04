@@ -71,14 +71,14 @@ morgan('combined', {
 *
 ***/
 
-app.get('/api/pages', (req, res) => {
+app.get('/api/records', (req, res) => {
   var query = {}
 
-  if (req.query.page) {
-    query.page = req.query.page
+  if (req.query.record) {
+    query.record = req.query.record
   }
 
-  models.page.find(query,
+  models.record.find(query,
     (err, data) => {
       if (err) return res.status(500).send({cause: err})
       return res.status(200).send(data)

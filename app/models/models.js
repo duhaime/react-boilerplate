@@ -1,5 +1,5 @@
 var models = {}
 
-models.page = require('./tables/page')
+models.record = require('./tables/record')
 
 module.exports = models

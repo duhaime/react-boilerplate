@@ -2,7 +2,7 @@ var mongoose = require('mongoose')
 var autoIncrement = require('mongoose-auto-increment')
 var db = require('../db')
 var config = require('../../../config')
-var table = 'page'
+var table = 'record'
 
 mongoose.Promise = require('bluebird')
 
