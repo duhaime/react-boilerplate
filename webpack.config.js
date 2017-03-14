@@ -2,8 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const CompressionPlugin = require('compression-webpack-plugin')
-
-const TARGET = process.env.npm_lifecycle_event;
+const config = require('./config')
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
@@ -12,25 +11,22 @@ const PATHS = {
 };
 
 // Specify babel configuration
+const TARGET = process.env.npm_lifecycle_event;
 process.env.BABEL_ENV = TARGET;
 
-// Define configuration options common to 
-// development and production environments
+// Configuration options used in dev and prod environments
 const common = {
 
   entry: {
     app: PATHS.app
   },
 
-  // Use the history api fallback so React routes
-  // are obeyed
+  // React routes require the history api fallback
   devServer: {
     historyApiFallback: true
   },
 
   // Specify which assets webpack should load
-  // '' allows files without an extension
-  // to be loaded
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -42,8 +38,6 @@ const common = {
   },
 
   // Include loaders for styles and jsx
-  // the include param specifies the location
-  // of files to be loaded (a subdomain of PATHS)
   module: {
     loaders: [
       {
@@ -53,7 +47,6 @@ const common = {
       },
       {
         test: /\.jsx?$/,
-        // Leverage caching for better performance
         loaders: ['babel?cacheDirectory'],
         include: PATHS.app
       }
@@ -71,9 +64,6 @@ if(TARGET === 'start' || !TARGET) {
     // Configure server
     devServer: {
       contentBase: PATHS.build,
-
-      // Enable history API fallback to facilitate
-      // API-based routing. 
       historyAPIFallback: true,
       hot: true,
       inline: true,
@@ -88,8 +78,9 @@ if(TARGET === 'start' || !TARGET) {
       // 0.0.0.0 is available to all network devices
       // unlike default
       host: process.env.HOST,
-      port: process.env.PORT || 8081
+      port: process.env.PORT || config.api.port + 1
     },
+
     plugins: [
 
       // Use hot module replacement
@@ -111,6 +102,7 @@ if(TARGET === 'build' || !TARGET) {
 if(TARGET === 'compress' || !TARGET) {
   module.exports = merge(common, {
     plugins: [
+
       // Optimize React library for production
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'

@@ -112,7 +112,7 @@ app.get('*', (req, res) => {
 })
 
 // ask server to listen on desired port
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || config.api.port
 app.listen(PORT, () => {
   console.log('Production Express server running at localhost:' + PORT)
 })

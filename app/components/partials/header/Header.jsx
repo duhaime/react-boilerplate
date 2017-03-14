@@ -3,7 +3,7 @@ import Navicon from './navicon/Navicon'
 import config from '../../../../config'
 import './header.css'
 
-class Header extends React.Component {
+export default class Header extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -21,5 +21,3 @@ class Header extends React.Component {
     )
   }
 }
-
-export default Header;

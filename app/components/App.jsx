@@ -2,7 +2,7 @@ import React from 'react'
 import Header from './partials/header/Header'
 import Footer from './partials/footer/Footer'
 
-class AppWrapper extends React.Component {
+export default class AppWrapper extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -21,5 +21,3 @@ class AppWrapper extends React.Component {
     )
   }
 }
-
-export default AppWrapper;
