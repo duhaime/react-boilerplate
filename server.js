@@ -1,15 +1,18 @@
 // server.js
 var express = require('express')
-var path = require('path')
+var methodOverride = require('method-override')
+var cookieParser = require('cookie-parser')
 var compression = require('compression')
+var bodyParser = require('body-parser')
 var session = require('express-session')
 var morgan = require('morgan')
-var cookieParser = require('cookie-parser')
-var bodyParser = require('body-parser')
-var methodOverride = require('method-override')
+var path = require('path')
+var favicon = require('serve-favicon')
+var config = require('./config')
 
-// configure database
+// db
 var mongoose = require('mongoose')
+var models = require('./app/models/models')
 
 /***
 *
@@ -17,9 +20,9 @@ var mongoose = require('mongoose')
 *
 ***/
 
-mongoose.connect('mongodb://localhost/dissertation');
-mongoose.connection.on('error', function(err) {
-  console.log(err);
+mongoose.connect('mongodb://localhost/' + config.db)
+mongoose.connection.on('error', (err) => {
+  console.log(err)
 })
 
 /***
@@ -29,7 +32,7 @@ mongoose.connection.on('error', function(err) {
 ***/
 
 // initialize the server
-var app = express()
+const app = express()
 
 // send compressed assets
 app.use(compression())
@@ -37,7 +40,7 @@ app.use(compression())
 // provide a session secret
 app.use(session({
   secret: 'hello_cello',
-  name: 'calculemmas',
+  name: '',
   proxy: true,
   resave: true,
   saveUninitialized: true
@@ -47,7 +50,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'build')))
 
 // enable the cookie parser
-app.use(cookieParser());
+app.use(cookieParser())
 
 // enable the body parser
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -64,17 +67,52 @@ morgan('combined', {
 
 /***
 *
-* View Routes
+* Data routes
+*
+***/
+
+app.get('/api/records', (req, res) => {
+  var query = {}
+
+  if (req.query.record) {
+    query.record = req.query.record
+  }
+
+  models.record.find(query,
+    (err, data) => {
+      if (err) return res.status(500).send({cause: err})
+      return res.status(200).send(data)
+  })
+})
+
+/***
+*
+* New records
+*
+***/
+
+app.post('/api/records/new', (req, res) => {
+  record = new models.record(req.body);
+
+  record.save((err, data) => {
+    if (err) return res.status(500).send({cause: err})
+    return res.status(200).send(data)
+  })
+})
+
+/***
+*
+* View routes
 *
 ***/
 
 // send requests to index.html so browserHistory in React Router works
-app.get('*', function (req, res) {
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
 
 // ask server to listen on desired port
-var PORT = process.env.PORT || 7000
-app.listen(PORT, function() {
+const PORT = process.env.PORT || config.api.port
+app.listen(PORT, () => {
   console.log('Production Express server running at localhost:' + PORT)
 })

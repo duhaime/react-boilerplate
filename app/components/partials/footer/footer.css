@@ -1,0 +1,26 @@
+.app-wrapper {
+  min-height: 100%;
+  margin-bottom: -32px;
+}
+
+.app-wrapper:after {
+  content: '';
+  display: block;
+}
+
+.footer, .app-wrapper:after {
+  height: 32px;
+}
+
+.footer {
+  display: table;
+  width: 100%;
+  background: #666;
+  text-align: center;
+  color: #fff;
+}
+
+.footer * {
+  display: table-cell;
+  vertical-align: middle;
+}

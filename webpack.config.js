@@ -1,36 +1,32 @@
-var path = require('path')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var CompressionPlugin = require('compression-webpack-plugin')
+const path = require('path')
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const CompressionPlugin = require('compression-webpack-plugin')
+const config = require('./config')
 
-var TARGET = process.env.npm_lifecycle_event;
-
-var PATHS = {
+const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
   node_modules: path.join(__dirname, 'node_modules')
 };
 
 // Specify babel configuration
+const TARGET = process.env.npm_lifecycle_event;
 process.env.BABEL_ENV = TARGET;
 
-// Define configuration options common to 
-// development and production environments
-var common = {
+// Configuration options used in dev and prod environments
+const common = {
 
   entry: {
     app: PATHS.app
   },
 
-  // Use the history api fallback so React routes
-  // are obeyed
+  // React routes require the history api fallback
   devServer: {
     historyApiFallback: true
   },
 
   // Specify which assets webpack should load
-  // '' allows files without an extension
-  // to be loaded
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -42,8 +38,6 @@ var common = {
   },
 
   // Include loaders for styles and jsx
-  // the include param specifies the location
-  // of files to be loaded (a subdomain of PATHS)
   module: {
     loaders: [
       {
@@ -53,7 +47,6 @@ var common = {
       },
       {
         test: /\.jsx?$/,
-        // Leverage caching for better performance
         loaders: ['babel?cacheDirectory'],
         include: PATHS.app
       }
@@ -71,9 +64,6 @@ if(TARGET === 'start' || !TARGET) {
     // Configure server
     devServer: {
       contentBase: PATHS.build,
-
-      // Enable history API fallback to facilitate
-      // API-based routing. 
       historyAPIFallback: true,
       hot: true,
       inline: true,
@@ -88,14 +78,15 @@ if(TARGET === 'start' || !TARGET) {
       // 0.0.0.0 is available to all network devices
       // unlike default
       host: process.env.HOST,
-      port: process.env.PORT || 8081
+      port: process.env.PORT || config.api.port + 1
     },
+
     plugins: [
 
       // Use hot module replacement
       new webpack.HotModuleReplacementPlugin()
     ]
-  });
+  })
 }
 
 // Bundled development configuration
@@ -104,13 +95,14 @@ if(TARGET === 'build' || !TARGET) {
     plugins: [
       new webpack.optimize.OccurrenceOrderPlugin()
     ]
-  });
+  })
 }
 
 // Production configuration
 if(TARGET === 'compress' || !TARGET) {
   module.exports = merge(common, {
     plugins: [
+
       // Optimize React library for production
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
@@ -125,5 +117,5 @@ if(TARGET === 'compress' || !TARGET) {
 
       new webpack.optimize.OccurrenceOrderPlugin()
     ]
-  });
+  })
 }

@@ -1,10 +1,25 @@
 body, html {
-  margin: 0;
-  padding: 0;
   height: 100%;
   width: 100%;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: Open Sans;
+}
+
+/***
+* Containers
+***/
+
+#app {
+  height: 100%;
+}
+
+.app-container {
+  height: 100%;
 }
