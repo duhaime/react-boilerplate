@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router';
 import './navicon.css';
 
-class Navicon extends React.Component {
+export default class Navicon extends React.Component {
   constructor(props) {
     super(props)
 
@@ -53,5 +53,3 @@ class Navicon extends React.Component {
     )
   }
 }
-
-export default Navicon;
