@@ -20,7 +20,12 @@ var models = require('./app/models/models')
 *
 ***/
 
-mongoose.connect('mongodb://localhost/' + config.db)
+mongoose.connect('mongodb://localhost/' + config.db, {
+  keepAlive: true,
+  reconnectTries: Number.MAX_VALUE,
+  useMongoClient: true
+})
+
 mongoose.connection.on('error', (err) => {
   console.log(err)
 })

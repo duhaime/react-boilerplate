@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
 import './main.css';
 
 ReactDOM.render(
-  <Router history={browserHistory}>
-    <Route component={App}>
-      <Route path='/' component={Home} />
-      <Route path='/about' component={About} />
-    </Route>
-  </Router>,
+  <BrowserRouter>
+    <App>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/about' component={About} />
+      </Switch>
+    </App>
+  </BrowserRouter>,
   document.getElementById('app')
 );

@@ -8,6 +8,5 @@ config.api = {
 }
 
 config.db = 'boilerplate'
-config.brand = 'boilerplate'
 
 module.exports = config

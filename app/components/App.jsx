@@ -1,12 +1,8 @@
-import React from 'react'
-import Header from './partials/header/Header'
-import Footer from './partials/footer/Footer'
+import React from 'react';
+import Header from './header/Header';
+import Footer from './footer/Footer';
 
 export default class AppWrapper extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <div className='app-container'>

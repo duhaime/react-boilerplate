@@ -28,7 +28,7 @@ const common = {
 
   // Specify which assets webpack should load
   resolve: {
-    extensions: ['', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx']
   },
 
   // Specify where compiled assets will be bundled
@@ -42,12 +42,12 @@ const common = {
     loaders: [
       {
         test: /\.css$/,
-        loaders: ['style', 'css'],
+        loaders: ['style-loader', 'css-loader'],
         include: [PATHS.app, PATHS.node_modules]
       },
       {
         test: /\.jsx?$/,
-        loaders: ['babel?cacheDirectory'],
+        loaders: ['babel-loader?cacheDirectory'],
         include: PATHS.app
       }
     ]
@@ -64,10 +64,8 @@ if(TARGET === 'start' || !TARGET) {
     // Configure server
     devServer: {
       contentBase: PATHS.build,
-      historyAPIFallback: true,
       hot: true,
       inline: true,
-      progress: true,
 
       // Display only errors amd minimize output:
       stats: 'errors-only',
