@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import App from './components/App';
 import Home from './components/Home';
 import About from './components/About';
+import './styles/style.js';
 
-ReactDOM.render(
+const router = (
   <BrowserRouter>
     <App>
       <Switch>
@@ -13,6 +14,7 @@ ReactDOM.render(
         <Route path='/about' component={About} />
       </Switch>
     </App>
-  </BrowserRouter>,
-  document.getElementById('app')
-);
+  </BrowserRouter>
+)
+
+export { router };
