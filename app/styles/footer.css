@@ -1,6 +1,6 @@
 .app-wrapper {
   min-height: 100%;
-  margin-bottom: -32px;
+  margin-bottom: -60px;
 }
 
 .app-wrapper:after {
@@ -9,7 +9,7 @@
 }
 
 .footer, .app-wrapper:after {
-  height: 32px;
+  height: 60px;
 }
 
 .footer {
