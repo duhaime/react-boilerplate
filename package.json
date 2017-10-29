@@ -11,10 +11,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --history-api-fallback --hot",
     "build": "./node_modules/webpack/bin/webpack.js",
     "compress": "./node_modules/webpack/bin/webpack.js",
-    "production": "npm run build && node server.js"
+    "production": "npm run build && node server/server.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

@@ -1,18 +1,14 @@
+import { Link } from 'react-router-dom';
 import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
 
 export default class AppWrapper extends React.Component {
   render() {
     return (
       <div className='app-container'>
-        <div className='app-wrapper'>
-          <Header />
-          <div className='app-content'>
-            {this.props.children}
-          </div>
-        </div>
-        <Footer />
+        <Link to={'/'}>Home</Link>
+        <Link to={'/about'}>About</Link>
+        <Link to={'/about/subroute'}>Subcomponent</Link>
+        {this.props.children}
       </div>
     )
   }
