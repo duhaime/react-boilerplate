@@ -12,19 +12,6 @@ const paths = {
   build: path.resolve(__dirname, 'build')
 }
 
-const pathsToCopy = [
-  {
-    context: path.join(paths.src),
-    from: path.join(paths.src, 'css', '*'),
-    to: paths.build
-  },
-  {
-    context: path.join(paths.src),
-    from: path.join(paths.src, 'images', '*'),
-    to: paths.build
-  }
-]
-
 const uglifyConfig = {
   sourceMap: false,
   warnings: false,
@@ -46,7 +33,8 @@ const common = {
   },
   output: {
     path: paths.build,
-    filename: 'bundle.[hash].js'
+    filename: 'bundle.[hash].js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -96,9 +84,9 @@ const common = {
 };
 
 const devSettings = {
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

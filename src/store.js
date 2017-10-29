@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
-import createSagaMiddleware from 'redux-saga';
-import freeze from 'redux-freeze';
 import { rootReducer } from './reducers/index';
 import { sagas } from './sagas/index';
+import createSagaMiddleware from 'redux-saga';
+import freeze from 'redux-freeze';
 
 // create an empty middleware array
 let middlewares = [];
