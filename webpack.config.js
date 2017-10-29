@@ -1,119 +1,131 @@
-const path = require('path')
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const CompressionPlugin = require('compression-webpack-plugin')
-const config = require('./config')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const merge = require('webpack-merge');
+const webpack = require('webpack'); 
+const path = require('path');
 
-const PATHS = {
-  app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build'),
-  node_modules: path.join(__dirname, 'node_modules')
-};
+const paths = {
+  src: path.resolve(__dirname, 'src'),
+  build: path.resolve(__dirname, 'build')
+}
 
-// Specify babel configuration
-const TARGET = process.env.npm_lifecycle_event;
-process.env.BABEL_ENV = TARGET;
-
-// Configuration options used in dev and prod environments
-const common = {
-
-  entry: {
-    app: PATHS.app
+const pathsToCopy = [
+  {
+    context: path.join(paths.src),
+    from: path.join(paths.src, 'css', '*'),
+    to: paths.build
   },
+  {
+    context: path.join(paths.src),
+    from: path.join(paths.src, 'images', '*'),
+    to: paths.build
+  }
+]
 
-  // React routes require the history api fallback
-  devServer: {
-    historyApiFallback: true
-  },
+const uglifyConfig = {
+  sourceMap: false,
+  warnings: false,
+  mangle: true,
+  minimize: true
+}
 
-  // Specify which assets webpack should load
-  resolve: {
-    extensions: ['*', '.js', '.jsx']
-  },
-
-  // Specify where compiled assets will be bundled
-  output: {
-    path: PATHS.build,
-    filename: 'bundle.js'
-  },
-
-  // Include loaders for styles and jsx
-  module: {
-    loaders: [
-      {
-        test: /\.css$/,
-        loaders: ['style-loader', 'css-loader'],
-        include: [PATHS.app, PATHS.node_modules]
-      },
-      {
-        test: /\.jsx?$/,
-        loaders: ['babel-loader?cacheDirectory'],
-        include: PATHS.app
-      }
-    ]
+const htmlConfig = {
+  template: path.join(paths.src, 'index.html'),
+  minify : {
+    collapseWhitespace: true
   }
 }
 
-// Development configuration
-if(TARGET === 'start' || !TARGET) {
-  module.exports = merge(common, {
-    
-    // Enable sourcemaps for debugging
-    devtool: 'eval-source-map',
-
-    // Configure server
-    devServer: {
-      contentBase: PATHS.build,
-      hot: true,
-      inline: true,
-
-      // Display only errors amd minimize output:
-      stats: 'errors-only',
-
-      // When using Vagrant or other VM, set:
-      // host: process.env.HOST || '0.0.0.0';
-      //
-      // 0.0.0.0 is available to all network devices
-      // unlike default
-      host: process.env.HOST,
-      port: process.env.PORT || config.api.port + 1
-    },
-
-    plugins: [
-
-      // Use hot module replacement
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  })
-}
-
-// Bundled development configuration
-if(TARGET === 'build' || !TARGET) {
-  module.exports = merge(common, {
-    plugins: [
-      new webpack.optimize.OccurrenceOrderPlugin()
-    ]
-  })
-}
-
-// Production configuration
-if(TARGET === 'compress' || !TARGET) {
-  module.exports = merge(common, {
-    plugins: [
-
-      // Optimize React library for production
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"'
-      }),
-
-      // Squash uglify warnings like 'Condition always true'
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false
+const common = {
+  entry: path.join(paths.src, 'index.js'),
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
+  },
+  output: {
+    path: paths.build,
+    filename: 'bundle.[hash].js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['env']
+          }
         }
-      }),
-
-      new webpack.optimize.OccurrenceOrderPlugin()
+      },
+      {
+        test: /\.(ts)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'awesome-typescript-loader',
+          options: {
+            useCache: false,
+          }
+        }
+      },
+      {
+        test: /\.(css)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        })
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        exclude: /(node_modules)/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {}
+          }
+        ]
+      }
     ]
-  })
+  },
+  plugins: [
+    new HtmlWebpackPlugin(htmlConfig),
+    new ExtractTextPlugin('styles.[contenthash].css'),
+  ]
+};
+
+const devSettings = {
+  devtool: 'source-map',
+  devServer: {
+    historyApiFallback: true
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin([paths.build]),
+  ]
+}
+
+const prodSettings = {
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin(uglifyConfig),
+    new OptimizeCssAssetsPlugin(),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+  ]
+}
+
+/**
+* Exports
+**/
+
+const TARGET = process.env.npm_lifecycle_event;
+process.env.BABEL_ENV = TARGET;
+
+if (TARGET === 'start') {
+  module.exports = merge(common, devSettings)
+}
+
+if (TARGET === 'build' || !TARGET) {
+  module.exports = merge(common, prodSettings)
 }
