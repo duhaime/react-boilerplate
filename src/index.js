@@ -2,13 +2,16 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from './store.js';
-import { router } from './router.js';
+import { store, history } from './store';
+import { routes } from './routes';
+import { ConnectedRouter } from 'connected-react-router';
 
 // render the main component
 ReactDOM.render(
   <Provider store={store}>
-    {router}
+    <ConnectedRouter history={history}>
+      {routes}
+    </ConnectedRouter>
   </Provider>,
   document.getElementById('app')
 );
