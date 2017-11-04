@@ -4,13 +4,13 @@ var path = require('path')
 var config = require('./config')
 
 // initialize mongoose orm
-const mongoose = require('./orm');
+const mongoose = require('./orm')();
 
 // initialize server
 const app = require('./middleware')(express())
 
 // add routes
-require('./routes')(app)
+require('./routes/routes')(app)
 
 // ask server to listen on desired port
 const port = process.env.PORT || config.api.port;

@@ -1,6 +1,6 @@
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('webpack-merge');
@@ -23,6 +23,12 @@ const htmlConfig = {
   template: path.join(paths.src, 'index.html'),
   minify : {
     collapseWhitespace: true
+  }
+}
+
+const cssConfig = {
+  cssProcessorOptions: {
+    safe: true,
   }
 }
 
@@ -78,6 +84,7 @@ const common = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin([paths.build]),
     new HtmlWebpackPlugin(htmlConfig),
     new ExtractTextPlugin('styles.[contenthash].css'),
   ]
@@ -95,10 +102,13 @@ const devSettings = {
 }
 
 const prodSettings = {
+  devtool: 'source-map',
   plugins: [
+    new webpack.DefinePlugin({ 'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }}),
     new webpack.optimize.UglifyJsPlugin(uglifyConfig),
-    new OptimizeCssAssetsPlugin(),
-    new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
+    new OptimizeCssAssetsPlugin(cssConfig),
     new webpack.optimize.OccurrenceOrderPlugin(),
   ]
 }

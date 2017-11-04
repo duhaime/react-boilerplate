@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Items from './Items';
 
 export default class AppWrapper extends React.Component {
   render() {
@@ -9,6 +10,7 @@ export default class AppWrapper extends React.Component {
         <Link to={'/about'}>About</Link>
         <Link to={'/about/subroute'}>Subcomponent</Link>
         {this.props.children}
+        <Items />
       </div>
     )
   }

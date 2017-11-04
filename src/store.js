@@ -1,25 +1,24 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createBrowserHistory } from 'history';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
 import { rootReducer } from './reducers/index';
-import { sagas } from './sagas/index';
-import createSagaMiddleware from 'redux-saga';
 import freeze from 'redux-freeze';
+import { fetchItems } from './actions/items';
 
-// create an empty middleware array
-let middlewares = [];
-
-// create the router middleware
 const history = createBrowserHistory();
-middlewares.push( routerMiddleware(history) );
+const loggerMiddleware = createLogger()
 
-// add the saga middleware
-const sagaMiddleware = createSagaMiddleware();
-middlewares.push(sagaMiddleware);
+let middlewares = [
+  routerMiddleware(history),
+  thunkMiddleware
+]
 
 // add the freeze dev middleware
 if (process.env.NODE_ENV !== 'production') {
-  middlewares.push(freeze);
+  middlewares.push(freeze)
+  middlewares.push(loggerMiddleware)
 }
 
 // apply the middleware
@@ -30,9 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
   if (window.devToolsExtension) {
     middleware = compose(middleware, window.devToolsExtension())
   } else if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-    middleware = composeEnhancer(
-      applyMiddleware(middleware)
-    )
+    middleware = composeEnhancer( applyMiddleware(middleware) )
   }
 }
 
@@ -42,6 +39,7 @@ const store = createStore(
   middleware
 );
 
-sagaMiddleware.run(sagas);
+// initialize app state
+store.dispatch(fetchItems('http://localhost:8080/api/items'))
 
 export { store, history };
