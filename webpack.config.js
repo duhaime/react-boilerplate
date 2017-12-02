@@ -26,12 +26,6 @@ const htmlConfig = {
   }
 }
 
-const cssConfig = {
-  cssProcessorOptions: {
-    safe: true,
-  }
-}
-
 const common = {
   entry: path.join(paths.src, 'index.js'),
   resolve: {
@@ -108,7 +102,7 @@ const prodSettings = {
       NODE_ENV: JSON.stringify('production')
     }}),
     new webpack.optimize.UglifyJsPlugin(uglifyConfig),
-    new OptimizeCssAssetsPlugin(cssConfig),
+    new OptimizeCssAssetsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
   ]
 }
