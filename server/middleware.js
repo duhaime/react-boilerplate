@@ -17,6 +17,8 @@ module.exports = (app) => {
 
   app.use(compression())
 
+  app.use(cookieParser())
+
   app.use(session({
     secret: 'hello_cello',
     name: '',
@@ -26,8 +28,6 @@ module.exports = (app) => {
   }))
 
   app.use(express.static(path.join(__dirname, '..', 'build')))
-
-  app.use(cookieParser())
 
   app.use(bodyParser.urlencoded({ extended: true }))
 
