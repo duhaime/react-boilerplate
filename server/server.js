@@ -3,8 +3,8 @@ var express = require('express')
 var path = require('path')
 var config = require('./config')
 
-// initialize mongoose orm
-const mongoose = require('./orm')();
+// initialize mongoose
+const mongoose = require('./mongo')();
 
 // initialize server
 const app = require('./middleware')(express())
