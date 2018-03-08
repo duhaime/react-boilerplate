@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --history-api-fallback —port 7090",
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack.config.js --port 7090",
     "build": "./node_modules/webpack/bin/webpack.js",
     "compress": "./node_modules/webpack/bin/webpack.js",
     "production": "npm run build && node server/server.js"
@@ -72,6 +72,13 @@
     "presets": [
       "env",
       "react"
-    ]
+    ],
+    "env": {
+      "start": {
+        "presets": [
+          "react-hmre"
+        ]
+      }
+    }
   }
 }
