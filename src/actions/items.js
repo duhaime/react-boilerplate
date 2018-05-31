@@ -8,11 +8,11 @@ export const decrementSearches = () => ({
   type: 'DECREMENT_SEARCHES'
 })
 
-export const requestItems = (query) => ({
+export const requestItems = query => ({
   type: 'REQUEST_ITEMS', query
 })
 
-export const receiveItems = (items) => ({
+export const receiveItems = items => ({
   type: 'RECEIVE_ITEMS', items
 })
 
@@ -20,8 +20,8 @@ export const itemRequestFailed = () => ({
   type: 'ITEM_REQUEST_FAILED'
 })
 
-export function fetchItems(query) {
-  return function(dispatch) {
+export const fetchItems = query => {
+  return dispatch => {
     dispatch(requestItems(query))
     dispatch(incrementSearches())
     return fetch(query)
