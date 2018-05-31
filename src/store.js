@@ -24,15 +24,6 @@ if (process.env.NODE_ENV !== 'production') {
 // apply the middleware
 let middleware = applyMiddleware(...middlewares);
 
-// add the redux dev tools
-if (process.env.NODE_ENV !== 'production') {
-  if (window.devToolsExtension) {
-    middleware = compose(middleware, window.devToolsExtension())
-  } else if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
-    middleware = composeEnhancer( applyMiddleware(middleware) )
-  }
-}
-
 // create the store
 const store = createStore(
   connectRouter(history)(rootReducer),
