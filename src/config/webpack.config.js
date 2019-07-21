@@ -8,8 +8,8 @@ const webpack = require('webpack')
 const path = require('path')
 
 const paths = {
-  src: path.resolve(__dirname, 'src'),
-  build: path.resolve(__dirname, 'build'),
+  src: path.resolve(__dirname, '..', '..', 'src'),
+  build: path.resolve(__dirname, '..', '..', 'build'),
 }
 
 const htmlConfig = {

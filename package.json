@@ -11,10 +11,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./webpack.config.js --port 7090",
-    "build": "./node_modules/webpack/bin/webpack.js --mode production",
-    "compress": "./node_modules/webpack/bin/webpack.js",
-    "production": "npm run build && node server/server.js"
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config ./src/config/webpack.config.js --port 7090",
+    "build": "./node_modules/webpack/bin/webpack.js --mode production --config ./src/config/webpack.config.js",
+    "compress": "./node_modules/webpack/bin/webpack.js --config ./src/config/webpack.config.js"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
