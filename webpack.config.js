@@ -1,33 +1,33 @@
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const merge = require('webpack-merge');
-const webpack = require('webpack');
-const path = require('path');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const merge = require('webpack-merge')
+const webpack = require('webpack')
+const path = require('path')
 
 const paths = {
   src: path.resolve(__dirname, 'src'),
-  build: path.resolve(__dirname, 'build')
+  build: path.resolve(__dirname, 'build'),
 }
 
 const htmlConfig = {
   template: path.join(paths.src, 'index.html'),
   minify : {
-    collapseWhitespace: true
+    collapseWhitespace: true,
   }
 }
 
 const common = {
   entry: path.join(paths.src, 'index.js'),
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   output: {
     path: paths.build,
     filename: 'bundle.[hash].js',
-    publicPath: '/'
+    publicPath: '/',
   },
   performance: {
     hints: false,
@@ -40,7 +40,7 @@ const common = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/env']
+            presets: ['@babel/env'],
           }
         }
       },
@@ -72,7 +72,7 @@ const common = {
         use: [
           {
             loader: 'file-loader',
-            options: {}
+            options: {},
           }
         ]
       }
