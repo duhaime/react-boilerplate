@@ -1,36 +1,30 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import { routerMiddleware, connectRouter } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
-import { createLogger } from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
-import { rootReducer } from './reducers/index';
-import freeze from 'redux-freeze';
-import { fetchItems } from './actions/items';
+import { createStore, applyMiddleware, compose } from 'redux'
+import { routerMiddleware } from 'connected-react-router'
+import { createBrowserHistory } from 'history'
+import { createLogger } from 'redux-logger'
+import thunkMiddleware from 'redux-thunk'
+import rootReducer from './reducers/index'
+import freeze from 'redux-freeze'
+import { fetchItems } from './actions/items'
 
-const history = createBrowserHistory();
-const loggerMiddleware = createLogger()
+const history = createBrowserHistory()
 
 let middlewares = [
   routerMiddleware(history),
-  thunkMiddleware
+  thunkMiddleware,
+  freeze,
 ]
 
-// add the freeze dev middleware
 if (process.env.NODE_ENV !== 'production') {
-  middlewares.push(freeze)
-  middlewares.push(loggerMiddleware)
+  middlewares.push(createLogger())
 }
 
-// apply the middleware
-let middleware = applyMiddleware(...middlewares);
-
-// create the store
 const store = createStore(
-  connectRouter(history)(rootReducer),
-  middleware
-);
+  rootReducer(history),
+  applyMiddleware(...middlewares),
+)
 
 // initialize app state
-store.dispatch(fetchItems('http://localhost:8080/api/items'))
+store.dispatch(fetchItems('https://jsonplaceholder.typicode.com/photos'))
 
-export { store, history };
+export { store, history }
