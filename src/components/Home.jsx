@@ -1,9 +1,10 @@
-import React from 'react';
+import React from 'react'
+import Items from './Items'
 
 const Home = (props) => (
   <div className='home'>
-    Home
+    <Items />
   </div>
 )
 
-export default Home;
+export default Home

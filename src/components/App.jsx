@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Items from './Items';
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default props => (
   <div className='app-container'>
@@ -8,6 +7,5 @@ export default props => (
     <Link to={'/about'}>About</Link>
     <Link to={'/about/subroute'}>Subcomponent</Link>
     {props.children}
-    <Items />
   </div>
 )

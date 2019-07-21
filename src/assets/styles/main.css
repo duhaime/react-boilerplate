@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans')
-
 body, html {
   height: 100%;
   width: 100%;
@@ -13,4 +11,8 @@ body, html {
 
 body {
   font-family: Open Sans;
+}
+
+.item img {
+  width: 40px;
 }

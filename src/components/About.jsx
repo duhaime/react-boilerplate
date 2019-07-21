@@ -1,6 +1,6 @@
-import React from 'react';
-import Subcomponent from './Subcomponent';
-import { Route, Switch } from 'react-router-dom';
+import React from 'react'
+import Subcomponent from './Subcomponent'
+import { Route, Switch } from 'react-router-dom'
 
 const About = (props) => (
   <div className='about'>
@@ -11,4 +11,4 @@ const About = (props) => (
   </div>
 )
 
-export default About;
+export default About
